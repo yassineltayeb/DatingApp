@@ -1,3 +1,4 @@
+import { AuthService } from './../_services/auth.service';
 import { catchError } from 'rxjs/operators';
 import { AlertifyService } from '../_services/alertify.service';
 import { Injectable } from '@angular/core';
@@ -8,15 +9,19 @@ import { Observable, of } from 'rxjs';
 
 @Injectable()
 
-export class MemberListResolver implements Resolve<User[]> {
+export class MemberEditResolver implements Resolve<User> {
 
-    constructor(private userService: UserService, private router: Router, private alertify: AlertifyService) {}
+    constructor(
+        private userService: UserService,
+        private router: Router,
+        private alertify: AlertifyService,
+        private authService: AuthService) {}
 
-    resolve(route: ActivatedRouteSnapshot): Observable<User[]> {
+    resolve(route: ActivatedRouteSnapshot): Observable<User> {
         // tslint:disable-next-line:no-string-literal
-        return this.userService.getUsers().pipe(
+        return this.userService.getUser(this.authService.decodedToken.nameid).pipe(
             catchError(error => {
-                this.alertify.error('Problem retrieving data');
+                this.alertify.error('Problem retrieving your data');
                 this.router.navigate(['/members']);
                 return of(null);
             })
