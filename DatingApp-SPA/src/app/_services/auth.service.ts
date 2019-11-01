@@ -19,6 +19,7 @@ export class AuthService {
   }
 
   login(model: any) {
+    console.log(model);
     return this.http.post(this.basUrl + 'login', model).pipe(map((resonse: any) => {
       const user = resonse;
 
