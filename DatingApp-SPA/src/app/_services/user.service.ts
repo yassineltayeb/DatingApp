@@ -53,4 +53,8 @@ updateUser(id: number, user: User) {
   return this.http.put(this.baseUrl + 'users/' + id, user);
 }
 
+sendLike(id: number, recipientId: number) {
+  return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
+}
+
 }
